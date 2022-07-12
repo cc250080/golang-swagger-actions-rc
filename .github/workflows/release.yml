@@ -5,10 +5,15 @@ on:
     branches:
       - 'main'
 
+env:
+  TEST_TAG: carles6/golang-swagger-actions-rc:test
+
 jobs:
   docker:
     runs-on: ubuntu-latest
     steps:
+      - name: Checkout
+        uses: actions/checkout@v3
       - name: Set up QEMU
         uses: docker/setup-qemu-action@v2
       - name: Set up Docker Buildx
@@ -18,9 +23,12 @@ jobs:
         with:
           username: ${{ secrets.DOCKERHUB_USERNAME }}
           password: ${{ secrets.DOCKERHUB_TOKEN }}
-      -
-        name: Build and push
+      - name: Build and export to Docker
         uses: docker/build-push-action@v3
         with:
-          push: true
-          tags: carles6/golang-swagger-actions-rc:latest
+          context: .
+          load: true
+          tags: ${{ env.TEST_TAG }}
+      - name: Test
+        run: |
+          docker run -it -p 8080:8080 ${{ env.TEST_TAG }}
