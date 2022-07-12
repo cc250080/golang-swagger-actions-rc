@@ -31,4 +31,4 @@ jobs:
           tags: ${{ env.TEST_TAG }}
       - name: Test
         run: |
-          docker run --rm -p 8080:8080 --env-file=.env --stop-timeout 120 ${{ env.TEST_TAG }}
+          timeout 60 docker run --rm -p 8080:8080 --env-file=.env --stop-signal SIGTERM ${{ env.TEST_TAG }}
