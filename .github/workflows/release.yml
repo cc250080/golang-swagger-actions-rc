@@ -30,5 +30,8 @@ jobs:
           load: true
           tags: ${{ env.TEST_TAG }}
       - name: Test
+        with:
+          username: ${{ secrets.DOCKERHUB_USERNAME }}
+          password: ${{ secrets.DOCKERHUB_TOKEN }}
         run: |
           docker run --rm -p 8080:8080 ${{ env.TEST_TAG }}
