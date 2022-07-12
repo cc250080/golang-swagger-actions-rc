@@ -29,11 +29,12 @@ jobs:
           context: .
           load: true
           tags: ${{ env.TEST_TAG }}
+      - name: Test
+        with:
           secrets: |
             "AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}"
             "AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}"
             "AWS_DEFAULT_REGION: ${{ secrets.AWS_DEFAULT_REGION }}"
             "SQS_QUEUE_URL: ${{ secrets.SQS_QUEUE_URL }}"
-      - name: Test
         run: |
           docker run --rm -p 8080:8080 ${{ env.TEST_TAG }}
