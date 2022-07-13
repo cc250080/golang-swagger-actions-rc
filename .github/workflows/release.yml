@@ -77,6 +77,8 @@ jobs:
         image: carles6/golang-swagger-actions-rc:latest
         ports:
           - 8080:8080
+        env:
+          REDIS_HOST: localhost
 
     steps:
       - name: Check out repository code
