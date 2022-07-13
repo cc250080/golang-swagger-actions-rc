@@ -92,6 +92,7 @@ jobs:
           go-version: '>=1.17.0'
       - name: Run Command
         run: |
+          ss -tulpn | grep LISTEN
           go test ./test/e2e --sqsQueueUrl=$SQS_QUEUE_URL --appUrl=http://localhost:8080
         env:
           SQS_QUEUE_URL: ${{ secrets.SQS_QUEUE_URL }}
