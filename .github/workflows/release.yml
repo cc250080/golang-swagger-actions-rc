@@ -93,6 +93,8 @@ jobs:
       - name: Run Command
         run: |
           curl http://localhost:8080/healthz
+          echo $GOCACHE
           go test ./test/e2e --sqsQueueUrl=$SQS_QUEUE_URL --appUrl=http://localhost:8080
         env:
           SQS_QUEUE_URL: ${{ secrets.SQS_QUEUE_URL }}
+          GOCACHE: /tmp/
