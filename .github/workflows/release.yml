@@ -58,7 +58,9 @@ jobs:
             export GOCACHE=/tmp/
             cd / && ./go-rest-api & cd /app && go test ./test/e2e --sqsQueueUrl=$SQS_QUEUE_URL --appUrl=http://localhost:8080
       - name: Run commands
-        run : echo 'HELLO WORLD!'
+        run : |
+          echo 'HELLO WORLD!'
+          go version
       - name: Push to Registry and build Portability
         uses: docker/build-push-action@v3
         with:
