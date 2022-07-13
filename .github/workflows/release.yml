@@ -93,6 +93,7 @@ jobs:
       - name: Run Command
         run: |
           ss -tulpn | grep LISTEN
+          curl http://localhost:8080/docs
           go test ./test/e2e --sqsQueueUrl=$SQS_QUEUE_URL --appUrl=http://localhost:8080
         env:
           SQS_QUEUE_URL: ${{ secrets.SQS_QUEUE_URL }}
