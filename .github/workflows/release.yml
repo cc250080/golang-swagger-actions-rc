@@ -78,7 +78,9 @@ jobs:
         ports:
           - 8080:8080
         env:
-          REDIS_HOST: localhost
+          SQS_QUEUE_URL: ${{ secrets.SQS_QUEUE_URL }}
+          AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
 
     steps:
       - name: Check out repository code
