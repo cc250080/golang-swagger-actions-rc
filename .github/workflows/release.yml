@@ -97,4 +97,7 @@ jobs:
           go test ./test/e2e --sqsQueueUrl=$SQS_QUEUE_URL --appUrl=http://localhost:8080
         env:
           SQS_QUEUE_URL: ${{ secrets.SQS_QUEUE_URL }}
+          AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+          AWS_DEFAULT_REGION: ${{ secrets.AWS_DEFAULT_REGION }}
           GOCACHE: /tmp/
