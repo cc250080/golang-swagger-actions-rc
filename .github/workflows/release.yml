@@ -5,6 +5,9 @@ on:
     branches:
       - 'main'
 
+env:
+  TEST_TAG: carles6/golang-swagger-actions-rc:test
+
 jobs:
   docker:
     runs-on: ubuntu-latest
@@ -22,17 +25,15 @@ jobs:
         name: Build
         uses: docker/build-push-action@v3
         with:
-          push: false
-          tags: carles6/golang-swagger-actions-rc:latest
-      - name: Run e2e tests
-        uses: addnab/docker-run-action@v3
-        with:
-          image: carles6/golang-swagger-actions-rc:latest
-          run: |
-            export SQS_QUEUE_URL=${{ secrets.SQS_QUEUE_URL }}
-            export AWS_ACCESS_KEY_ID=${{ secrets.AWS_ACCESS_KEY_ID }}
-            export AWS_SECRET_ACCESS_KEY=${{ secrets.AWS_SECRET_ACCESS_KEY }}
-            export AWS_DEFAULT_REGION=${{ secrets.AWS_DEFAULT_REGION }}
-            export GOCACHE=/tmp/
-            ls /
-            cd / && ./go-rest-api & cd /app && go test ./test/e2e --sqsQueueUrl=$SQS_QUEUE_URL --appUrl=http://localhost:8080
+          context: .
+          load: true
+          tags: $ {{ env.TEST_TAG }}
+      - name: Test
+        run: |
+          export SQS_QUEUE_URL=${{ secrets.SQS_QUEUE_URL }}
+          export AWS_ACCESS_KEY_ID=${{ secrets.AWS_ACCESS_KEY_ID }}
+          export AWS_SECRET_ACCESS_KEY=${{ secrets.AWS_SECRET_ACCESS_KEY }}
+          export AWS_DEFAULT_REGION=${{ secrets.AWS_DEFAULT_REGION }}
+          export GOCACHE=/tmp/
+          ls /
+          cd / && ./go-rest-api & cd /app && go test ./test/e2e --sqsQueueUrl=$SQS_QUEUE_URL --appUrl=http://localhost:8080
