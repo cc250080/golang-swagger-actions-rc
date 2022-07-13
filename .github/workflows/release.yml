@@ -30,4 +30,4 @@ jobs:
           image: carles6/golang-swagger-actions-rc:latest
           run: |
             export SQS_QUEUE_URL=${{ secrets.SQS_QUEUE_URL }}
-            echo $SQS_QUEUE_URL
+            ./go-rest-api
