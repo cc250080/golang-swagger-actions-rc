@@ -6,7 +6,7 @@ on:
       - 'main'
 
 jobs:
-  lint:
+  StaticAnalysis:
     runs-on: ubuntu-18.04
     steps:
       - uses: actions/checkout@v2
@@ -22,16 +22,12 @@ jobs:
           golangci-lint run --skip-dirs='(internal|test)'
 
 
-  docker:
+  Build:
     runs-on: ubuntu-latest
-    needs: lint
+    needs: StaticAnalysis
     steps:
       - name: Checkout
         uses: actions/checkout@v3
-      - name: Go   
-        uses: actions/setup-go@v3
-        with:
-          go-version: '>=1.17.0'
       - name: Set up QEMU
         uses: docker/setup-qemu-action@v2
       - name: Set up Docker Buildx
@@ -59,10 +55,6 @@ jobs:
             export AWS_DEFAULT_REGION=${{ secrets.AWS_DEFAULT_REGION }}
             export GOCACHE=/tmp/
             cd / && ./go-rest-api & cd /app && go test ./test/e2e --sqsQueueUrl=$SQS_QUEUE_URL --appUrl=http://localhost:8080
-      - name: Run commands
-        run : |
-          echo 'HELLO WORLD!'
-          go version
       - name: Push to Registry and build Portability
         uses: docker/build-push-action@v3
         with:
@@ -73,6 +65,7 @@ jobs:
 
   test:
     runs-on: ubuntu-latest
+    needs: Build
     services:
       swagger-go:
         image: carles6/golang-swagger-actions-rc:latest
