@@ -11,7 +11,7 @@ RUN cp swagger /go/bin/
 RUN go generate go-rest-api/internal go-rest-api/pkg/swagger
 RUN go build -o bin/go-rest-api internal/main.go
 
-FROM alpine:3.15 as final
+FROM debian:latest as final
 COPY --from=root-certs /etc/passwd /etc/passwd
 COPY --from=root-certs /etc/group /etc/group
 COPY --chown=1001:1001 --from=root-certs /etc/ssl/certs/ca-certificates.crt /etc/ssl/certs/
