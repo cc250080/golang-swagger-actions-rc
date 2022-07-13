@@ -69,3 +69,11 @@ jobs:
           platforms: linux/amd64,linux/arm64
           push: true
           tags: carles6/golang-swagger-actions-rc:latest
+
+  test:
+    runs-on: ubuntu-latest
+    services:
+      swagger-go:
+        image: carles6/golang-swagger-actions-rc:latest
+        ports:
+          - 8080:8080
