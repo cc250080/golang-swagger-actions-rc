@@ -22,7 +22,6 @@ jobs:
           golangci-lint run --skip-dirs='(internal|test)'
 
 
-jobs:
   docker:
     runs-on: ubuntu-latest
     steps:
