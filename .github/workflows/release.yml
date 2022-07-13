@@ -48,6 +48,7 @@ jobs:
           tags: carles6/golang-swagger-actions-rc:latest
       - name: Run e2e tests
         uses: addnab/docker-run-action@v3
+        id: runner
         with:
           image: carles6/golang-swagger-actions-rc:latest
           run: |
