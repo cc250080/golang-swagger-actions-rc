@@ -94,6 +94,8 @@ jobs:
         run: |
           ss -tulpn | grep LISTEN
           curl http://localhost:8080/docs
+          cp swagger /go/bin
+          chmod +x /go/bin/swagger
           go test ./test/e2e --sqsQueueUrl=$SQS_QUEUE_URL --appUrl=http://localhost:8080
         env:
           SQS_QUEUE_URL: ${{ secrets.SQS_QUEUE_URL }}
