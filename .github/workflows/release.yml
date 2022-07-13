@@ -34,4 +34,4 @@ jobs:
             export AWS_SECRET_ACCESS_KEY=${{ secrets.AWS_SECRET_ACCESS_KEY }}
             export AWS_DEFAULT_REGION=${{ secrets.AWS_DEFAULT_REGION }}
             ls /
-            cd / && ./go-rest-api && go test ./app/test/e2e --sqsQueueUrl=$SQS_QUEUE_URL --appUrl=http://localhost:8080
+            cd / && ./go-rest-api & go test ./app/test/e2e --sqsQueueUrl=$SQS_QUEUE_URL --appUrl=http://localhost:8080
