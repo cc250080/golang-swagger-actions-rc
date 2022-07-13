@@ -31,4 +31,4 @@ jobs:
           run: |
             export SQS_QUEUE_URL=${{ secrets.SQS_QUEUE_URL }}
             ls /
-            ./app/bin/go-rest-api
+            cd / && ./go-rest-api
