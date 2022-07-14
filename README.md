@@ -9,7 +9,7 @@ The app creator also provided with e2e tests that need to be executed during the
     https://go.dev/ >= 1.17
     https://github.com/go-swagger/go-swagger
 
-This application is sending messages to SQS, so having a SQS, so having an SQS queue available and reachable is also part of the requisites.
+This application is sending messages to SQS, so having an SQS queue available and reachable is also part of the requisites.
 
 ## First Steps
 
@@ -27,6 +27,8 @@ Important to note that for the app to work I had to configure different AWS rela
 ### Dockerize the App
 
 With the goal to try a multilayered *Dockerfile* and end with a small as possible final Docker Container I created the *Dockerfile* that can be found in the root folder of this repo.
+
+In order to properly test the build and the container itself in my local environment, I had created an .env file with all the necessary environment variables. That is why I added *.env* to the original provided **.gitignore** file
 
 ### Use github actions from the MarketPlace
 
