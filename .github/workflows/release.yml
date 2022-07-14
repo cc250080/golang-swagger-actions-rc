@@ -47,7 +47,6 @@ jobs:
   test:
     runs-on: ubuntu-latest
     needs: Build
-    needs: StaticAnalysis
     services:
       swagger-go:
         image: carles6/golang-swagger-actions-rc:test
