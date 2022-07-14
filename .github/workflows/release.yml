@@ -24,7 +24,6 @@ jobs:
 
   Build:
     runs-on: ubuntu-latest
-    needs: StaticAnalysis
     steps:
       - name: Checkout
         uses: actions/checkout@v3
@@ -48,6 +47,7 @@ jobs:
   test:
     runs-on: ubuntu-latest
     needs: Build
+    needs: StaticAnalysis
     services:
       swagger-go:
         image: carles6/golang-swagger-actions-rc:test
