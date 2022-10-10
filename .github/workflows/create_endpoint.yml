@@ -6,7 +6,16 @@ on:
       ENVIRONMENT_URL:
         description: 'URL to call to generate the Queue and Endpoint, usually in the form of https://sqs.eu-central-1.amazonaws.com/${ORIGIN_ACCOUNT}/iot-queue-edge'
         required: true
-
+      ORIGIN_ACCOUNT:
+        description: 'AWS Account from the Prod Team (12 Numbers)'
+        required: true
+      CUSTOMER_ENVIRONMENT:
+        description: 'The stage/env of the Prod Team'
+        type: choice
+        options:
+        - dev
+        - qa
+        - prod
 
 jobs:
   StaticAnalysis:
