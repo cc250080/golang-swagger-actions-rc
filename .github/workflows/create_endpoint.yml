@@ -1,9 +1,12 @@
-name: ci
+name: create_endpoint
 
-#on:
-#  push:
-#    branches:
-#      - 'main'
+on:
+  workflow_dispatch:
+    inputs:
+      ENVIRONMENT_URL:
+        description: 'URL to call to generate the Queue and Endpoint, usually in the form of https://sqs.eu-central-1.amazonaws.com/${ORIGIN_ACCOUNT}/iot-queue-edge'
+        required: true
+
 
 jobs:
   StaticAnalysis:
