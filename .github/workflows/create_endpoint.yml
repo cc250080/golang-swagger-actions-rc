@@ -45,3 +45,4 @@ jobs:
       - name: Bash execution
         run: 
           bash create_endpoint.sh -h
+          echo ${PATH}
