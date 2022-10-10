@@ -64,13 +64,13 @@ if [[ ${#ORIGIN_ACCOUNT} -ne 12 ]]; then
 fi
 
 ### Create the Endpoint, will stop script if fails
-curl -X PUT -S --location "https://iot-api.${ENVIRONMENT_URL}.edge-services.navify.com/endpoint" -H "Content-Type: application/json" -d "{ \"thingName\": \"${ORIGIN_ACCOUNT}:${CUSTOMER_ENVIRONMENT}:${CLUSTER_ID}\"}" -o $CLUSTER_ID.endpoint
+curl -X DELETE -S --location "https://iot-api.${ENVIRONMENT_URL}.edge-services.navify.com/endpoint" -H "Content-Type: application/json" -d "{ \"thingName\": \"${ORIGIN_ACCOUNT}:${CUSTOMER_ENVIRONMENT}:${CLUSTER_ID}\"}" -o $CLUSTER_ID.endpoint
 
 cat $CLUSTER_ID.endpoint | jq -r .PrivateKey > $CLUSTER_ID.key
 cat $CLUSTER_ID.endpoint | jq -r .certificatePem > $CLUSTER_ID.crt
 
 # Configure routing to send messages to SQS Queue
-curl -X PUT -S --location "https://iot-api.${ENVIRONMENT_URL}.edge-services.navify.com/rule/tosqs" -H "Content-Type: application/json"  -d "{\"thingName\": \"${ORIGIN_ACCOUNT}:${CUSTOMER_ENVIRONMENT}:${CLUSTER_ID}\", \"topicFilter\": \"${SUBJECT_FILTER}\", \"sqsQueueUrl\": \"${SQS_DESTINATION}\" }"
+curl -X DELETE -S --location "https://iot-api.${ENVIRONMENT_URL}.edge-services.navify.com/rule/tosqs" -H "Content-Type: application/json"  -d "{\"thingName\": \"${ORIGIN_ACCOUNT}:${CUSTOMER_ENVIRONMENT}:${CLUSTER_ID}\", \"topicFilter\": \"${SUBJECT_FILTER}\", \"sqsQueueUrl\": \"${SQS_DESTINATION}\" }"
 
 ###VAULT PART
 asdasdasd
