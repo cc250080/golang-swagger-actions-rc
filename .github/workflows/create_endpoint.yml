@@ -15,7 +15,7 @@ on:
         description: 'AWS Account from the Prod Team (12 Numbers)'
         required: true
       CUSTOMER_ENVIRONMENT:
-        description: 'The stage/env of the Prod Team'
+        description: 'The stage/env of the Product Team'
         required: true
         type: choice
         options:
@@ -33,99 +33,15 @@ on:
         required: true
       VAULT_TOKEN:
         description: 'A Vault Token is required to execute Vault, right now a temporary token has to be created manually and pasted here'
+        required: true
 
 
 jobs:
-  StaticAnalysis:
-    runs-on: ubuntu-18.04
-    steps:
-      - uses: actions/checkout@v2
-      - uses: actions/setup-go@v2
-        with:
-          stable: 'false'
-          go-version: '1.17'
-
-      - name: Lint
-        run: |
-          curl -sSfL https://raw.githubusercontent.com/golangci/golangci-lint/master/install.sh | sh -s -- -b $(go env GOPATH)/bin v1.46.2
-
-          golangci-lint run --skip-dirs='(internal|test)'
-
-
-  Build:
+  RunTheScript:
     runs-on: ubuntu-latest
     steps:
-      - name: Checkout
-        uses: actions/checkout@v3
-      - name: Set up QEMU
-        uses: docker/setup-qemu-action@v2
-      - name: Set up Docker Buildx
-        uses: docker/setup-buildx-action@v2
-      - name: Login to DockerHub
-        uses: docker/login-action@v2
-        with:
-          username: ${{ secrets.DOCKERHUB_USERNAME }}
-          password: ${{ secrets.DOCKERHUB_TOKEN }}
-      - name: Prepare an Image to be Tested
-        uses: docker/build-push-action@v3
-        with:
-          context: .
-          platforms: linux/amd64,linux/arm64
-          push: true
-          tags: carles6/golang-swagger-actions-rc:test
-
-  test:
-    runs-on: ubuntu-latest
-    needs: Build
-    services:
-      swagger-go:
-        image: carles6/golang-swagger-actions-rc:test
-        ports:
-          - 8080:8080
-        env:
-          SQS_QUEUE_URL: ${{ secrets.SQS_QUEUE_URL }}
-          AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
-          AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
-          AWS_DEFAULT_REGION: ${{ secrets.AWS_DEFAULT_REGION }}  
-
-    steps:
-      - name: Check out repository code
-        uses: actions/checkout@v3
-      - name: Go   
-        uses: actions/setup-go@v3
-        with:
-          go-version: '1.17'
-      - name: Run Command
-        run: |
-          curl http://localhost:8080/healthz
-          echo $GOCACHE
-          go test ./test/e2e --sqsQueueUrl=$SQS_QUEUE_URL --appUrl=http://localhost:8080
-        env:
-          SQS_QUEUE_URL: ${{ secrets.SQS_QUEUE_URL }}
-          AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
-          AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
-          AWS_DEFAULT_REGION: ${{ secrets.AWS_DEFAULT_REGION }}
-          GOCACHE: /tmp/
-
-  Deploy2Registry:
-    runs-on: ubuntu-latest
-    needs: test
-    steps:
-      - name: Check out repository code
-        uses: actions/checkout@v3
-      - name: Set up QEMU
-        uses: docker/setup-qemu-action@v2
-      - name: Set up Docker Buildx
-        uses: docker/setup-buildx-action@v2
-      - name: Login to DockerHub
-        uses: docker/login-action@v2
-        with:
-          username: ${{ secrets.DOCKERHUB_USERNAME }}
-          password: ${{ secrets.DOCKERHUB_TOKEN }}
-      - name: Push to Registry and build Portability
-        uses: docker/build-push-action@v3
-        with:
-          context: .
-          platforms: linux/amd64,linux/arm64
-          push: true
-          tags: carles6/golang-swagger-actions-rc:latest
+      - uses: actions/checkout@v3
+      - uses: uses: hashicorp/vault-action@v2.4.2
+      - name: Bash execution
+        run: 
+          bash create_endpoint.sh -h
