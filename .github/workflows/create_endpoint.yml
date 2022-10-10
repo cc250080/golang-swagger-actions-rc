@@ -44,5 +44,5 @@ jobs:
       - uses: eLco/setup-vault@v1
       - name: Bash execution
         run: 
-          bash create_endpoint.sh -h
-          echo ${PATH}
+          bash create_endpoint.sh ${{ inputs.ENVIRONMENT }} ${{ inputs.ORIGIN_ACCOUNT }} ${{ inputs.CUSTOMER_ENVIRONMENT }} ${{ inputs.CLUSTER_ID }} ${{ inputs.SQS_DESTINATION }} ${{ inputs.RANCHER_INSTANCE }} ${{ inputs.VAULT_TOKEN }}
+          
