@@ -41,7 +41,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v3
-      - uses: hashicorp/vault-action@v2.4.2
+      - uses: eLco/setup-vault@v1
       - name: Bash execution
         run: 
           bash create_endpoint.sh -h
